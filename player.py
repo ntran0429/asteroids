@@ -1,6 +1,6 @@
 import circleshape
 import pygame
-from constants import PLAYER_RADIUS
+from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED
 
 class Player(circleshape.CircleShape):
     def __init__(self, x, y):
@@ -17,3 +17,32 @@ class Player(circleshape.CircleShape):
     
     def draw(self, screen):
         pygame.draw.polygon(screen, (255,255,255), self.triangle(), 2)
+        
+    def rotate(self, dt):
+        # dt = clock.tick(60) / 1000
+        # dt represents the time that has passed since the last frame (in seconds)
+        # dt normalizes the movement speed across different frame rates.
+        # On a 60 FPS computer: dt ≈ 1/60 ≈ 0.016 seconds / frame
+        # On a 30 FPS computer: dt ≈ 1/30 ≈ 0.033 seconds / frame
+        self.rotation += PLAYER_TURN_SPEED * dt # degrees per frame
+    
+    
+    def update(self, dt):
+        """
+        The update method dynamically updates the player's behavior or state each frame of the game loop.
+        """
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_a]:
+            self.rotate(-dt)
+        if keys[pygame.K_d]:
+            self.rotate(dt)
+        if keys[pygame.K_w]:
+            self.move(dt)
+        if keys[pygame.K_s]:
+            self.move(-dt)
+            
+    def move(self, dt):
+        """need the ship to move back and forth with the W and S keys."""
+        forward = pygame.Vector2(0, 1).rotate(self.rotation)
+        self.position += forward * PLAYER_SPEED * dt

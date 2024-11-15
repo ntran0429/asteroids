@@ -2,6 +2,7 @@ import pygame
 
 # Base class for game objects
 # to represent objects in our game that are treated as circles (even if they aren't)
+# The CircleShape class handles the circular collision detection, but we're not drawing the circle
 class CircleShape(pygame.sprite.Sprite):
     def __init__(self, x, y, radius):
         if hasattr(self, "containers"):

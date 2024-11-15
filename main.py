@@ -11,11 +11,15 @@ def main():
     x = SCREEN_WIDTH / 2
     y = SCREEN_HEIGHT / 2
     player = Player(x, y)
+    
+
 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
+            
+        player.update(dt)
 
         screen.fill(color= (0, 0, 0))
         player.draw(screen)
@@ -23,6 +27,10 @@ def main():
         
         # limit the framerate to 60 FPS
         dt = clock.tick(60) / 1000
+        
+        # Hook the update method into the game loop by calling it on the player object each frame before rendering.
+        
+        
 
 if __name__ == "__main__":
     main()
