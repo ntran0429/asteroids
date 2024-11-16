@@ -1,3 +1,4 @@
+import sys
 import pygame
 from constants import *
 from player import Player
@@ -37,11 +38,17 @@ def main():
         # player.update(dt)
         for obj in updatable:
             obj.update(dt)
+            
+        for asteroid in asteroids:
+            if asteroid.check_collision(player):
+                sys.exit("Game over!")
 
         screen.fill(color= (0, 0, 0))
+        
         # player.draw(screen)
         for obj in drawable:
             obj.draw(screen)
+            
         pygame.display.flip()
         
         # limit the framerate to 60 FPS
