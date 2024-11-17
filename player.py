@@ -7,7 +7,7 @@ class Player(circleshape.CircleShape):
     def __init__(self, x, y):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
-        self.timer = 0
+        self.shoot_timer = 0
 
     
     def triangle(self):
@@ -34,6 +34,7 @@ class Player(circleshape.CircleShape):
         """
         The update method dynamically updates the player's behavior or state each frame of the game loop.
         """
+        self.shoot_timer -= dt
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_a]:
@@ -46,11 +47,7 @@ class Player(circleshape.CircleShape):
             self.move(-dt)
             
         if keys[pygame.K_SPACE]:
-            if self.timer <= 0:
-                self.shoot()
-                self.timer = PLAYER_SHOOT_COOLDOWN
-            # Decrease the timer by dt every time update is called on the player
-            self.timer -= dt
+            self.shoot()
             
     def move(self, dt):
         """need the ship to move back and forth with the W and S keys."""
@@ -58,6 +55,9 @@ class Player(circleshape.CircleShape):
         self.position += forward * PLAYER_SPEED * dt
         
     def shoot(self):
+        if self.shoot_timer > 0:
+            return
+        self.shoot_timer = PLAYER_SHOOT_COOLDOWN
         x = self.position.x
         y = self.position.y
         new_shot = shot.Shot(x, y, SHOT_RADIUS)
