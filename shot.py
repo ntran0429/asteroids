@@ -1,8 +1,9 @@
 import pygame
-import circleshape
-from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED
+from circleshape import CircleShape
+from constants import SHOT_RADIUS
 
-class Asteroid(circleshape.CircleShape):
+
+class Shot(CircleShape):
     def __init__(self, x, y, radius):
         super().__init__(x, y, radius)
         
