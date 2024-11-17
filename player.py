@@ -1,12 +1,14 @@
 import circleshape
 import shot
 import pygame
-from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED, SHOT_RADIUS, PLAYER_SHOOT_SPEED, SCREEN_WIDTH, SCREEN_HEIGHT
+from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED, SHOT_RADIUS, PLAYER_SHOOT_SPEED, PLAYER_SHOOT_COOLDOWN 
 
 class Player(circleshape.CircleShape):
     def __init__(self, x, y):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
+        self.timer = 0
+
     
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -44,7 +46,11 @@ class Player(circleshape.CircleShape):
             self.move(-dt)
             
         if keys[pygame.K_SPACE]:
-            self.shoot()
+            if self.timer <= 0:
+                self.shoot()
+                self.timer = PLAYER_SHOOT_COOLDOWN
+            # Decrease the timer by dt every time update is called on the player
+            self.timer -= dt
             
     def move(self, dt):
         """need the ship to move back and forth with the W and S keys."""
